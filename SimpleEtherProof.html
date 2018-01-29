@@ -2,18 +2,26 @@
 	<head>
 		<script src="./web3.js/dist/web3.min.js"></script>
 		<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>		
-		<script src="./EtherProof.js"></script>
+		<script src="./SimpleEtherProof.js"></script>
 	</head>
 	<body>
-		<h1> Ether Proof </h1>
+		<h1> Simple Ether Proof </h1>
 		<br><br>
-		<h2> Search The Existence of a Hash </h2>
+		<h2> Search The Existence of a Index </h2>
 		<form>
 			<input type="text" id="hash" />
 			<input type="button" value="Check" onclick="existence()" />
 		</form>
 		<div id="existence">
 		</div>
+		<h2> Add new Index </h2>
+		<form>
+			<input type="text" id="hash_new" />
+			<input type="button" value="Add" onclick="addIndex()" />
+		</form>
+		<div id="added">
+		</div>
+		
 		
 	</body>
 </html>
