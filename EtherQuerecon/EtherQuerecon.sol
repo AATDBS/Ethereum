@@ -56,20 +56,30 @@ function createExpediente(uint256 expedienteId, string codigoExpediente) public 
 }
 
 //crea un fichero
-function createFichero(uint256 expedienteId, uint256 ficheroId, bytes32 ficheroHash) public returns (bool) 
+function createFichero(uint256 expedienteId, string codigoExpediente, uint256 ficheroId, bytes32 ficheroHash) public returns (bool) 
 {
-    //si no existe la entidad da error
-    require(expedientes[expedienteId].fecha != 0);
-	//si existe el fichero da error
-	require(expedientes[expedienteId].ficheros[ficheroId].fecha == 0);
+    //si no existe el expediente, lo crea
+    if (expedientes[expedienteId].fecha == 0) {
+        createExpediente(expedienteId, codigoExpediente);
+    }
+	
+	//si no existe el fichero, lo crea
+	if (expedientes[expedienteId].ficheros[ficheroId].fecha == 0) {
+	    
+	    expedientes[expedienteId].numeroFicheros++;
     
-    expedientes[expedienteId].numeroFicheros++;
-    
-    expedientes[expedienteId].ficheros[ficheroId].userAddress = msg.sender; //usuario que lanza la transaccion
-    expedientes[expedienteId].ficheros[ficheroId].fecha = now;
-    expedientes[expedienteId].ficheros[ficheroId].hash = ficheroHash;
+        expedientes[expedienteId].ficheros[ficheroId].userAddress = msg.sender; //usuario que lanza la transaccion
+        expedientes[expedienteId].ficheros[ficheroId].fecha = now;
+        expedientes[expedienteId].ficheros[ficheroId].hash = ficheroHash;
     
     return true;
+	    
+	} else {
+	    //si ya existe el fichero da error
+	    return false;
+	}
+	
+    
 }
 
 //recupera los datos de un expediente
