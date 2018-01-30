@@ -73,7 +73,7 @@ function createFichero(uint256 expedienteId, uint256 ficheroId, bytes32 ficheroH
 }
 
 //recupera los datos de un expediente
-function getEntity(uint256 expedienteId) public view returns (string, uint256, address, uint256) {
+function getExpediente(uint256 expedienteId) public view returns (string, uint256, address, uint256) {
 
     //si no existe da error
     require(expedientes[expedienteId].fecha != 0);
@@ -83,7 +83,7 @@ function getEntity(uint256 expedienteId) public view returns (string, uint256, a
 }
 
 //recupera un fichero
-function getEntityStatus(uint256 expedienteId, uint256 ficheroId) public view returns (address, uint256, bytes32 ) {
+function getExpedienteFichero(uint256 expedienteId, uint256 ficheroId) public view returns (address, uint256, bytes32 ) {
 
     //si no existe el fichero da error
     require(expedientes[expedienteId].ficheros[ficheroId].fecha != 0);
