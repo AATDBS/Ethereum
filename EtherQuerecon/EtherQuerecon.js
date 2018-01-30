@@ -1,5 +1,5 @@
 //datos del contrato
-var address = '0x2a3d523c56c8848674fe96bad2a2ebd3f20aeee2';
+var address = '0xC946B501900DcE171c6eA3f4D56E6553736E22ed';
 var EtherProofAPI = [
 	{
 		"constant": true,
@@ -76,7 +76,7 @@ var EtherProofAPI = [
 
 var geth_url = "http://172.18.64.91:8545";
 
-var user_address = "0x21DD55B34FE05eB1B396Ef61ea207dD089C05E4e";
+var user_address = "0xC946B501900DcE171c6eA3f4D56E6553736E22ed";
 var user_password = "PEPE";
 var transaction_wei_cost = 100000;
 var transaction_gas = 4700000;
