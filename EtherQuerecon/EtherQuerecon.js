@@ -77,7 +77,7 @@ var EtherProofAPI = [
 var geth_url = "http://172.18.64.91:8545";
 
 var user_address = "0x21DD55B34FE05eB1B396Ef61ea207dD089C05E4e";
-var user_password = "Corbata22";
+var user_password = "PEPE";
 var transaction_wei_cost = 100000;
 var transaction_gas = 4700000;
 
