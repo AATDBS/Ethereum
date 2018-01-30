@@ -1,57 +1,27 @@
 //datos del contrato
-var address = '0xC946B501900DcE171c6eA3f4D56E6553736E22ed';
-var EtherProofAPI = [
+var address = '0x9537ca69649859fd35960e19f591b8543ee91b66';
+var EtherQuereconAPI = [
 	{
 		"constant": true,
 		"inputs": [
 			{
-				"name": "index",
+				"name": "ficheroId",
 				"type": "uint256"
 			}
 		],
-		"name": "getTimestamp",
+		"name": "getFichero",
 		"outputs": [
 			{
 				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "getBlockNumber",
-		"outputs": [
+				"type": "address"
+			},
 			{
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "checkExistence",
-		"outputs": [
+			},
 			{
 				"name": "",
-				"type": "bool"
+				"type": "bytes32"
 			}
 		],
 		"payable": false,
@@ -60,16 +30,43 @@ var EtherProofAPI = [
 	},
 	{
 		"constant": false,
+		"inputs": [],
+		"name": "EntityContract",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [
 			{
-				"name": "index",
+				"name": "ficheroId",
 				"type": "uint256"
+			},
+			{
+				"name": "ficheroHash",
+				"type": "bytes32"
 			}
 		],
-		"name": "addFile",
+		"name": "createFichero",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "kill",
 		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ];
@@ -78,7 +75,8 @@ var geth_url = "http://172.18.64.91:8545";
 
 var user_address = "0xC946B501900DcE171c6eA3f4D56E6553736E22ed";
 var user_password = "PEPE";
-var transaction_wei_cost = 100000;
+//var transaction_wei_cost = 100000;
+var transaction_wei_cost = 0;
 var transaction_gas = 4700000;
 
 
@@ -89,53 +87,61 @@ if (typeof web3 !== 'undefined') {
 	//web3 = new Web3(new Web3.providers.HttpProvider("http://172.18.64.91:8545"));
 	web3 = new Web3(new Web3.providers.HttpProvider(geth_url));
 }
-var EtherProof = web3.eth.contract(EtherProofAPI).at(address);
+var EtherQuerecon = web3.eth.contract(EtherQuereconAPI).at(address);
 
-function existence() {
-	console.log('Checking');
+function createFichero() {
+	
+	console.log('Create ...');
 		
-	var hash = document.getElementById('hash').value;
-    var existence = document.getElementById('existence');
+	var ficheroId = document.getElementById('ficheroId').value;
+	var ficheroHash = document.getElementById('ficheroHash').value;
+    var results = document.getElementById('createFichero_results');
 	
-	existence.innerHTML = '<h2> Checking ... </h2>';
+	results.innerHTML = '<h2> Create ... </h2>';
 	
-	console.log('Hash to check:' + hash);
-	
-	//if (hash.length != 66) {
-	//	existence.innerHTML = '<h2> Invalid hash</h2>';
-	//} else {
-		
-		var fileExistence = EtherProof.checkExistence(hash, function(error, result) {
+	//desbloquea la cuenta
+	web3.personal.unlockAccount(user_address, user_password, 15000);
 			
-			if (error) {
-					console.error(error);
-			} else {
-				console.log(result);				
-				
-				if (!result) {
-					existence.innerHTML = '<h2> This index does not exist </h2>';
-				} else {
-					existence.innerHTML = '<h2> This index do exists </h2>';
-					EtherProof.getTimestamp(hash, function(error, result) {
-						if (error) {
-								console.error(error);
-						} else {
-							console.log(result);
-							existence.innerHTML += '<p> Timestamp: ' + new Date(result * 1000) + '</p>';
-						}
-					}); 
-					EtherProof.getBlockNumber(hash, function(error, result) {
-						if (error) {
-								console.error(error);
-						} else {
-							console.log(result);
-							existence.innerHTML += '<p> Block Number: ' + result + '</p>';
-						}
-					});
-					
-				}
-			}
-		});
+	var fileExistence = EtherQuerecon.createFichero.sendTransaction(
+                ficheroId, ficheroHash,
+                {
+                        from: user_address, 
+                        value: transaction_wei_cost, //wei
+                        gas: transaction_gas
+                }, function(error, result) {
+			
+		if (error) {
+			console.error(error);
+			results.innerHTML = '<h2> Error al crear el fichero </h2>';
+		} else {
+			console.log(result);				
+			results.innerHTML = '<h2> Fichero registrado correctamente </h2>';
+			results.innerHTML += '<p>Transaction: <pre>' + result + '</pre></p>';
+		}
+	});
+	
+}
+
+function getFichero() {
+	
+	console.log('Get ...');
+		
+	var ficheroId = document.getElementById('getFicheroId').value;
+    var results = document.getElementById('getFichero_results');
+	
+	results.innerHTML = '<h2> Get ... </h2>';
+			
+	var fileExistence = EtherQuerecon.getFichero(ficheroId, function(error, result) {
+			
+		if (error) {
+				console.error(error);
+				results.innerHTML = '<h2> Error al obtener el fichero </h2>';
+		} else {
+			console.log(result);							
+			results.innerHTML = '<h2> Fichero : </h2>';
+			results.innerHTML += '<pre>' + JSON.stringify(result) + '</pre>';
+		}
+	});
 	
 }
 
@@ -181,4 +187,19 @@ function addIndex() {
 			}				
 		}
 	});	
+}
+
+function transactionInfo() {
+
+	console.log('transactionInfo ...');
+		
+	var transactionId = document.getElementById('transactionId').value;
+    var results = document.getElementById('transactionInfo_results');	
+	
+	var transaction = web3.eth.getTransaction(transactionId);
+	console.log(transaction);
+						
+	results.innerHTML = '<h2> Tranx: ' + transactionId + '</h2>';
+	results.innerHTML += '<pre>' + JSON.stringify(transaction) + '</pre>';
+	
 }

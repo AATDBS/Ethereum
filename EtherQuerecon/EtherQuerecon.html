@@ -7,23 +7,27 @@
 	<body>
 		<h1> Querecon - Ethereum </h1>
 		<br><br>
-		<h2> Registrar Fichero de Expediente</h2>
-		<form>
-			ID de Expediente: <input type="text" id="expedienteId" />
-			Código de Expediente: <input type="text" id="expedienteCod" />
+		<h2> Registrar Fichero</h2>
+		<form>			
 			ID de Fichero: <input type="text" id="ficheroId" />
 			HASH del Fichero: <input type="text" id="ficheroHash" />
 			<input type="button" value="Registrar" onclick="createFichero()" />
 		</form>
 		<div id="createFichero_results">
+		<h2> Verificar Transaccion</h2>
+		</div>
+		<form>
+			Transaction hash: <input type="text" id="transactionId" />
+			<input type="button" value="Verificar" onclick="transactionInfo()" />
+		</form>
+		<div id="transactionInfo_results">
 		</div>
 		<h2> Obtener Fichero de Expediente</h2>
 		<form>
-			ID de Expediente: <input type="text" id="expedienteId" />
-			ID de Fichero: <input type="text" id="ficheroId" />
+			ID de Fichero: <input type="text" id="getFicheroId" />
 			<input type="button" value="Obtener" onclick="getFichero()" />
 		</form>
-		<div id="getFichero">
+		<div id="getFichero_results">
 		</div>
 		
 		
