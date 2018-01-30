@@ -2,24 +2,28 @@
 	<head>
 		<script src="./web3.js/dist/web3.min.js"></script>
 		<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>		
-		<script src="./SimpleEtherProof.js"></script>
+		<script src="./EtherQuerecon.js"></script>
 	</head>
 	<body>
-		<h1> Simple Ether Proof </h1>
+		<h1> Querecon - Ethereum </h1>
 		<br><br>
-		<h2> Search The Existence of a Index </h2>
+		<h2> Crear Fichero de Expediente</h2>
 		<form>
-			<input type="text" id="hash" />
-			<input type="button" value="Check" onclick="existence()" />
+			ID de Expediente: <input type="text" id="expedienteId" />
+			Código de Expediente: <input type="text" id="expedienteCod" />
+			ID de Fichero: <input type="text" id="ficheroId" />
+			HASH del Fichero: <input type="text" id="ficheroHash" />
+			<input type="button" value="Check" onclick="createFichero()" />
 		</form>
-		<div id="existence">
+		<div id="createFichero_results">
 		</div>
-		<h2> Add new Index </h2>
+		<h2> Comprobar Fichero de Expediente</h2>
 		<form>
-			<input type="text" id="hash_new" />
-			<input type="button" value="Add" onclick="addIndex()" />
+			ID de Expediente: <input type="text" id="expedienteId" />
+			ID de Fichero: <input type="text" id="ficheroId" />
+			<input type="button" value="Check" onclick="getFichero()" />
 		</form>
-		<div id="added">
+		<div id="getFichero">
 		</div>
 		
 		
