@@ -2,7 +2,7 @@ pragma solidity ^0.4.18;
 
 contract FileRegister{
     
-address private creator;    
+address private creator; 
 
 //constructor
 function EntityContract() public 
@@ -19,9 +19,8 @@ function kill() public
 
 //struct for Fichero
 struct Fichero {
-	  //uint idFichero;       // identificacion del fichero //se utiliza como index del array
-	  address userAddress;    // usuario que registra el expediente
-    uint fecha;             // fecha cuando se registra el expediente    
+	address userAddress;    // usuario que registra el fichero
+    uint fecha;             // fecha cuando se registra el fichero
 }
 
 //internal arrays
