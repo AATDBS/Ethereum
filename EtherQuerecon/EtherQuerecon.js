@@ -89,6 +89,35 @@ if (typeof web3 !== 'undefined') {
 }
 var EtherQuerecon = web3.eth.contract(EtherQuereconAPI).at(address);
 
+function networkStatus() {
+	console.log('networkStatus ...');
+	
+	var results = document.getElementById('network_results');
+	
+	results.innerHTML = '<p>Version: <pre>' + web3.version.node + '</pre></p>';
+	
+	results.innerHTML += '<p>isConnected: <pre>' + JSON.stringify(web3.isConnected()) + '</pre></p>';
+		
+	web3.net.getPeerCount(function(error, result){  		
+		results.innerHTML += '<p>PeerCount: <pre>' + result + '</pre></p>';
+	});
+	
+	var info = web3.eth.getBlock(web3.eth.blockNumber);	
+	var date = new Date(info.timestamp*1000);
+	results.innerHTML += '<p>BlockNumber: <pre>' + web3.eth.blockNumber + ' - ' + date + '</pre></p>';
+	
+	results.innerHTML += '<p>Mining: <pre>' + web3.eth.mining + '</pre></p>';
+	
+	web3.eth.getHashrate(function(error, result){  		
+		results.innerHTML += '<p>Hashrate: <pre>' + result + '</pre></p>';
+	});
+	
+	results.innerHTML += '<p>Contract address: <pre>' + EtherQuerecon.address + ' IBAN:' + web3.eth.iban.fromAddress(EtherQuerecon.address) + '</pre></p>';
+	results.innerHTML += '<p>User address: <pre>' + user_address + ' IBAN:' + web3.eth.iban.fromAddress(user_address) + '</pre></p>';
+	
+	
+}
+
 function createFichero() {
 	
 	console.log('Create ...');
