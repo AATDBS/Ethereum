@@ -8,9 +8,10 @@
 		<h1> Querecon - Ethereum </h1>
 		<h2> Ethereum Network</h2>
 		<form>						
-			<input type="button" value="Status" onclick="networkStatus()" />
+			<input type="button" id ="btn_status" value="Status" onclick="networkStatus()" />
 		</form>
-		<div id="network_results" style="background-color: black; color: white;"></div>
+		<div id="network_results" style="background-color: black; color: white;">1</div>
+		<div id="pending_results" style="background-color: black; color: white;">2</div>
 		<br><br>
 		<h2> Registrar Fichero</h2>
 		<form>			
@@ -37,4 +38,15 @@
 		
 		
 	</body>
+<script>	
+$(document).ready(function() {
+	networkStatus();
+	monitorizePendings();
+	/*
+	setInterval(function() {
+	  networkStatus();
+	}, 1000);
+	*/
+});	
+</script>
 </html>

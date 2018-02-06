@@ -71,7 +71,9 @@ var EtherQuereconAPI = [
 	}
 ];
 
+//var geth_url = "https://ropsten.infura.io/XCC6u78kzejY7smtlXvW"; 
 var geth_url = "http://172.18.64.91:8545";
+//var geth_url = "http://ec2-34-243-3-163.eu-west-1.compute.amazonaws.com:8545";
 
 var user_address = "0xC946B501900DcE171c6eA3f4D56E6553736E22ed";
 var user_password = "PEPE";
@@ -90,13 +92,17 @@ if (typeof web3 !== 'undefined') {
 var EtherQuerecon = web3.eth.contract(EtherQuereconAPI).at(address);
 
 function networkStatus() {
-	console.log('networkStatus ...');
-	
+	console.log('networkStatus ...');	
 	var results = document.getElementById('network_results');
+	results.innerHTML = '<p><pre>Checking ...</pre></p>';
 	
-	results.innerHTML = '<p><pre>Version: ' + web3.version.node + '</pre></p>';
+	try {
 	
-	results.innerHTML += '<p><pre>isConnected: ' + JSON.stringify(web3.isConnected()) + '</pre></p>';
+	results.innerHTML = '<p><pre>Node: ' + geth_url 
+	+ '<br>Connected: ' + JSON.stringify(web3.isConnected())
+	+ '<br>Version: ' + web3.version.node 
+	+ '<br>Mining: ' + web3.eth.mining + '</pre></p>';
+		
 		
 	web3.net.getPeerCount(function(error, result){  		
 		results.innerHTML += '<p><pre>PeerCount: ' + result + '</pre></p>';
@@ -105,20 +111,43 @@ function networkStatus() {
 	var info = web3.eth.getBlock(web3.eth.blockNumber);	
 	var date = new Date(info.timestamp*1000);
 	var date2 = new Date();
-	results.innerHTML += '<p><pre>BlockNumber: ' + web3.eth.blockNumber + ' - ' + date + ' hace ' + Math.round((date2 - date)/1000) + ' segundos</pre></p>';
-	
-	results.innerHTML += '<p><pre>Contract address: ' + EtherQuerecon.address + ' IBAN:' + web3.eth.iban.fromAddress(EtherQuerecon.address) + '</pre></p>';
-	results.innerHTML += '<p><pre>User address: ' + user_address + ' IBAN:' + web3.eth.iban.fromAddress(user_address) + '</pre></p>';
-	
-	
-	results.innerHTML += '<p><pre>Mining: ' + web3.eth.mining + '</pre></p>';
+	results.innerHTML += '<p><pre>BlockNumber: ' + web3.eth.blockNumber + ' - ' + date + ' hace ' + Math.round((date2 - date)/1000) + ' segundos'
+	+ '<br>Transactions: ' + web3.eth.getBlockTransactionCount(web3.eth.blockNumber) 
+	+ '<br>Last Transactions: ' + info.transactions + '</pre></p>';
+		
 	
 	web3.eth.getHashrate(function(error, result){  		
 		results.innerHTML += '<p><pre>Hashrate: ' + result + '</pre></p>';
 	});
 	
+	} catch(ex) {
+		results.innerHTML = '<p><pre>Error: ' + ex + '</pre></p>';
+	}
 	
+}
+
+function monitorizePendings() {
 	
+	console.log("monitorizePendings...");
+	var results = document.getElementById('pending_results');
+	results.innerHTML = '<p><pre>Checking ...</pre></p>';
+	
+	web3.eth.filter("pending").watch(
+    function(error,result){
+		console.log("Pendings watch");
+        if (error) {
+            console.log(result);
+			var results = document.getElementById('pending_results');
+			results.innerHTML = '<p><pre>Error: ' + error + '</pre></p>';
+        } else {
+			console.log(result);
+			//var transaction = web3.eth.getTransaction(result);
+			//console.log(transaction);
+			var results = document.getElementById('pending_results');
+			results.innerHTML = '<p><pre>New Pending: ' + result + '</pre></p>';
+		}
+    });
+	console.log("monitorizePendings end");
 }
 
 function createFichero() {
