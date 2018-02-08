@@ -8,6 +8,8 @@
 		<h1> Querecon - Ethereum </h1>
 		<h2> Ethereum Network</h2>
 		<form>						
+			<input type="button" id ="btn_node1" value="Node1" onclick="geth_url= geth_url1;gethStart();networkStatus();" />
+			<input type="button" id ="btn_node2" value="Node2" onclick="geth_url= geth_url2;gethStart();networkStatus();" />
 			<input type="button" id ="btn_status" value="Status" onclick="networkStatus()" />
 		</form>
 		<div id="network_results" style="background-color: black; color: white;">1</div>

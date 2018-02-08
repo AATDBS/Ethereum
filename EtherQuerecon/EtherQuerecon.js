@@ -72,8 +72,10 @@ var EtherQuereconAPI = [
 ];
 
 //var geth_url = "https://ropsten.infura.io/XCC6u78kzejY7smtlXvW"; 
-var geth_url = "http://172.18.64.91:8545";
-//var geth_url = "http://ec2-34-243-3-163.eu-west-1.compute.amazonaws.com:8545";
+var geth_url1 = "http://172.18.64.91:8545";
+var geth_url2 = "http://ethereum1.dynamic-dns.net:8545";
+
+var geth_url  = geth_url1;
 
 var user_address = "0xC946B501900DcE171c6eA3f4D56E6553736E22ed";
 var user_password = "PEPE";
@@ -81,15 +83,19 @@ var user_password = "PEPE";
 var transaction_wei_cost = 0;
 var transaction_gas = 4700000;
 
-
-if (typeof web3 !== 'undefined') {
-	web3 = new Web3(web3.currentProvider);
-} else {
-    // set the provider you want from Web3.providers
-	//web3 = new Web3(new Web3.providers.HttpProvider("http://172.18.64.91:8545"));
-	web3 = new Web3(new Web3.providers.HttpProvider(geth_url));
+function gethStart() {
+	if (typeof web3 !== 'undefined') {
+		console.log(web3.currentProvider.host);
+		if (web3.currentProvider.host != geth_url) {
+			//the url has changed
+			web3 = new Web3(new Web3.providers.HttpProvider(geth_url));
+		}				
+	} else {
+		// set the provider you want from Web3.providers
+		web3 = new Web3(new Web3.providers.HttpProvider(geth_url));
+	}
+	var EtherQuerecon = web3.eth.contract(EtherQuereconAPI).at(address); 
 }
-var EtherQuerecon = web3.eth.contract(EtherQuereconAPI).at(address);
 
 function networkStatus() {
 	console.log('networkStatus ...');	
@@ -108,6 +114,8 @@ function networkStatus() {
 		results.innerHTML += '<p><pre>PeerCount: ' + result + '</pre></p>';
 	});
 	
+	console.log('networkStatus 2');	
+	
 	var info = web3.eth.getBlock(web3.eth.blockNumber);	
 	var date = new Date(info.timestamp*1000);
 	var date2 = new Date();
@@ -123,6 +131,8 @@ function networkStatus() {
 	} catch(ex) {
 		results.innerHTML = '<p><pre>Error: ' + ex + '</pre></p>';
 	}
+	
+	console.log('networkStatus end');	
 	
 }
 
@@ -220,3 +230,5 @@ function transactionInfo() {
 	results.innerHTML += '<pre>' + JSON.stringify(transaction) + '</pre>';
 	
 }
+
+gethStart();
