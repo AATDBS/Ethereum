@@ -1,2 +1,3 @@
 # Ethereum
-Ethereum Test repository
+
+Ethereum related code repository
