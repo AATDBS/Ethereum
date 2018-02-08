@@ -1,3 +1,3 @@
 # Ethereum
 
-Ethereum related code repository
+[Ethereum](https://ethereum.org/) related code repository
