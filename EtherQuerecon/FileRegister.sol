@@ -17,7 +17,7 @@ contract FileRegister {
     
     //struct for Fichero
     struct Fichero {
-               address userAddress;    // usuario que registra el fichero
+        address userAddress;    // usuario que registra el fichero
         uint timestamp;         // fecha cuando se registra el fichero
         uint blockNumber;       // numero de bloque de la transaccion
     }
@@ -33,7 +33,7 @@ contract FileRegister {
     //crea un fichero
     function createFichero(bytes32 ficheroHash) public {
         
-        require(ficheros[ficheroHash].timestamp == 0); //si no existe el fichero da error
+        require(ficheros[ficheroHash].timestamp == 0); //si existe el fichero da error
         
         ficheros[ficheroHash] = Fichero( msg.sender, now, block.number);
                ficheroInfo(ficheroHash);
