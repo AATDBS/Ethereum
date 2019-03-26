@@ -1,11 +1,11 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
 
 contract EntityContract{
     
-address private creator;    
+address payable private creator;    
 
 //constructor
-function EntityContract() public 
+constructor() public 
 {
     creator = msg.sender; 
 }
@@ -36,7 +36,7 @@ mapping (uint256 => Entity ) private entities ; // array of entities
 mapping (string => uint256 ) private entitiesbyRef ; // array of entities
 
 //crea una entidad
-function createEntity(uint256 entityId, string entityAddress) public returns (bool) 
+function createEntity(uint256 entityId, string memory entityAddress) public returns (bool) 
 {
     //comprueba que no exista ya
     //recupera la entidad
@@ -57,7 +57,7 @@ function createEntity(uint256 entityId, string entityAddress) public returns (bo
 }
 
 //crea un estado
-function createEntityStatus(uint256 entityId, uint256 statusId, string _status) public returns (bool) 
+function createEntityStatus(uint256 entityId, uint256 statusId, string memory _status) public returns (bool) 
 {
     //si no existe la entidad da error
     require(entities[entityId].dataTime != 0);
@@ -74,7 +74,7 @@ function createEntityStatus(uint256 entityId, uint256 statusId, string _status) 
 }
 
 //recupera los datos de una entidad
-function getEntity(uint256 entityId) public view returns (string, uint256, address, uint256) {
+function getEntity(uint256 entityId) public view returns (string memory, uint256, address, uint256) {
 
     //si no existe da error
     require(entities[entityId].dataTime != 0);
@@ -84,14 +84,14 @@ function getEntity(uint256 entityId) public view returns (string, uint256, addre
 }
 
 //recupera los datos de una entidad
-function getEntityByRef(string entityAddress) public view returns (string, uint256, address, uint256) {
+function getEntityByRef(string memory entityAddress) public view returns (string memory, uint256, address, uint256) {
 	
 	return getEntity(entitiesbyRef[entityAddress]);
 	
 }
 
 //recupera los estados de una entidad
-function getEntityStatus(uint256 entityId, uint256 statusId) public view returns (address, uint256, string ) {
+function getEntityStatus(uint256 entityId, uint256 statusId) public view returns (address, uint256, string memory ) {
 
     require(entities[entityId].dataTime != 0);
     
