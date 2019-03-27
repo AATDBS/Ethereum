@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AYESA Alastria Node Test Page</title>
+		<!-- <meta charset="utf-8"> -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+		<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+		<script src="web3/web3.js"></script>
+	<style>
+	.footer {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		background-color: black;
+		color: gray;
+		text-align: center;
+	}
+	</style>
+
+	</head>
+	<body>
+		<div class="container">
+			<h1>AYESA Alastria Node Test Page</h1>
+			<div class="well">
+				<h3>Latest Block from Node</h3>
+				<div>
+					<p>
+						<strong>Blocknumber:</strong>
+						<strong id="block-info">Conectando...</strong>
+					</p>
+				</div>
+				<div>
+					<p>NetStat: <a href="http://netstats.telsius.alastria.io/">http://netstats.telsius.alastria.io/</a></p>
+					<p>Block Explorer: <a href="http://blkexplorer0.telsius.alastria.io">http://blkexplorer0.telsius.alastria.io</a></p>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer">
+		  <p>&copy; 2019 Copyright | <a href="https://www.ayesa.com">Ayesa</a> |  <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria"> Ayesa-Alastria Internal Site</a></p>
+ 		</div>
+	</body>
+	<script>	
+	$(document).ready(function() {
+
+		console.log('Start'); 
+		
+		// Show Web3 where it needs to look for a connection to Ethereum. 
+		web3 = new Web3(new Web3.providers.HttpProvider('http://192.168.56.103/rpc'));
+		
+		web3.eth.getBlockNumber((err, result) => { 
+			if(err) console.error('ERROR', err); 	
+			console.log('Result', result); 
+			$("#block-info").html(result);
+		}); 		
+		
+		console.log('End'); 
+		
+	});	
+	</script>
+</html>
