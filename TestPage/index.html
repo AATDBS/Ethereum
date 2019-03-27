@@ -97,17 +97,16 @@
 		var isAddress = web3.isAddress(inputValue);
 
 		if (isAddress) {
-				$("#code-info").html("Consultando...");
-				web3.eth.getCode(inputValue, function(error, result){
-
-						if (error) {
-								console.log('getcode error',error);
-								$("#code-info").html(error);
-						} else {
-								console.log('getcode result',result);
-								$("#code-info").html(result);
-						}
-				});
+			$("#code-info").html("Consultando...");
+			web3.eth.getCode(inputValue, function(error, result){
+				if (error) {
+					console.log('getcode error',error);
+					$("#code-info").html(error);
+				} else {
+					console.log('getcode result',result);
+					$("#code-info").html(result);
+				}
+			});
 		} else {
 				alert('El valor introducido, no es una direccion valida');
 		}
