@@ -28,7 +28,9 @@
 				<div>
 					<p>
 						<strong>Blocknumber:</strong>
-						<strong id="block-info">Conectando...</strong>
+						<strong id="block-info"></strong>
+						<span id="version-info"></span>
+						<button onclick="initTestPage()" class="btn btn-primary">Refrescar</button>
 					</p>
 				</div>
 				<div>
@@ -39,13 +41,15 @@
 		</div>
 
 		<div class="footer">
-		  <p>&copy; 2019 Copyright | <a href="https://www.ayesa.com">Ayesa</a> |  <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria"> Ayesa-Alastria Internal Site</a></p>
+		  <p>&copy; 2019 Copyright | <a href="https://www.ayesa.com">Ayesa</a> |  <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria"> Ayesa-Alastria Internal Site</a> | <a href="mailto:alastria@ayesa.com">alastria@ayesa.com</a></p>
  		</div>
 	</body>
-	<script>	
-	$(document).ready(function() {
-
+	<script>			
+	function initTestPage() {
 		console.log('Start'); 
+		
+		$("#block-info").html("Conectando...");
+		$("#version-info").html("");
 		
 		// Show Web3 where it needs to look for a connection to Ethereum. 
 		web3 = new Web3(new Web3.providers.HttpProvider('http://192.168.56.103/rpc'));
@@ -56,7 +60,16 @@
 			$("#block-info").html(result);
 		}); 		
 		
+		web3.version.getNode(function(error, result){
+			$("#version-info").html(result);			
+		});
+		
 		console.log('End'); 
+	}
+	
+	$(document).ready(function() {
+
+		initTestPage();
 		
 	});	
 	</script>
