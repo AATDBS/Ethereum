@@ -1,54 +1,242 @@
 <html>
 	<head>
-		<script src="./web3.js/dist/web3.min.js"></script>
-		<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>		
-		<script src="./EtherQuerecon.js"></script>
+		<meta charset="UTF-8">		
+				
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+				
+		<link href="./colors.css" rel="stylesheet">
+		<link href="./EtherQuerecon.css" rel="stylesheet">
 	</head>
-	<body>
-		<h1> Querecon - Ethereum </h1>
-		<h2> Ethereum Network</h2>
-		<form>						
-			<input type="button" id ="btn_node1" value="Node1" onclick="geth_url= geth_url1;gethStart();networkStatus();" />
-			<input type="button" id ="btn_node2" value="Node2" onclick="geth_url= geth_url2;gethStart();networkStatus();" />
-			<input type="button" id ="btn_status" value="Status" onclick="networkStatus()" />
-		</form>
-		<div id="network_results" style="background-color: black; color: white;">1</div>
-		<div id="pending_results" style="background-color: black; color: white;">2</div>
-		<br><br>
-		<h2> Registrar Fichero</h2>
-		<form>			
-			ID de Fichero: <input type="text" id="ficheroId" />
-			HASH del Fichero: <input type="text" id="ficheroHash" />
-			<input type="button" value="Registrar" onclick="createFichero()" />
-		</form>
-		<div id="createFichero_results">
-		<h2> Verificar Transaccion</h2>
-		</div>
-		<form>
-			Transaction hash: <input type="text" id="transactionId" />
-			<input type="button" value="Verificar" onclick="transactionInfo()" />
-		</form>
-		<div id="transactionInfo_results">
-		</div>
-		<h2> Obtener Fichero de Expediente</h2>
-		<form>
-			ID de Fichero: <input type="text" id="getFicheroId" />
-			<input type="button" value="Obtener" onclick="getFichero()" />
-		</form>
-		<div id="getFichero_results">
-		</div>
+	<body>		
 		
+		<div id="overlay" class="overlay-app"><img src="Preloader_7.gif" alt="Cargando..." /><br/>Conectando red Ethereum.</div>
 		
+		<nav class="navbar navbar-expand-md fixed-top navbar-default"></nav>
+		
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-8">
+					<ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom: 10px;">
+					  <li class="nav-item">
+						<a class="nav-link active" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="true">Registro</a>
+					  </li>
+					  <li class="nav-item">
+						<a class="nav-link" id="verify-tab" data-toggle="tab" href="#verify" role="tab" aria-controls="verify" aria-selected="false">Verificación</a>
+					  </li>
+					</ul>
+					<div class="tab-content" id="myTabContent">
+					  <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
+						  
+							<div class="row">
+								<div class="col">
+									<form role="form" action="" method="post" class="f1">
+										<div id="overlay-f1" class="overlay-form" style="display: none"><img src="Preloader_7.gif" alt="Cargando..." /><br/>Por favor espere.</div>
+										
+										<!--h3>Crea un sello de verificación para tus archivos</h3>
+										<p>Con esta aplicación podrás crear un sello único descentralizado que te permite validar la originalidad de tus archivos.</p-->
+										<div class="f1-steps">
+											<div class="f1-progress">
+												<div class="f1-progress-line" data-now-value="14.66" data-number-of-steps="4" style="width: 14.66%;"></div>
+											</div>
+											<div class="f1-step active">
+												<div class="f1-step-icon"><i class="fas fa-home"></i></div>
+												<p>Inicio</p>
+											</div>
+											<div class="f1-step">
+												<div class="f1-step-icon"><i class="far fa-check-square"></i></div>
+												<p>Seleccionar</p>
+											</div>
+											<div class="f1-step">
+												<div class="f1-step-icon"><i class="fas fa-certificate"></i></div>
+												<p>Sellado</p>
+											</div>
+											<div class="f1-step">
+												<div class="f1-step-icon"><i class="fas fa-flag-checkered"></i></div>
+												<p>Resultado</p>
+											</div>
+										</div>
+										
+										<fieldset style="display: block;">
+											<h5>Inicio</h5>
+											<p>Con esta aplicación podrás crear un sello único descentralizado que te permite validar la originalidad de tus archivos.</p>
+																						
+											<div class="f1-buttons">
+												<button type="button" class="btn btn-next">Iniciar</button>
+											</div>
+										</fieldset>
+										
+										<fieldset>
+											<h5>Seleccionar</h5>
+											<p>Mediante el botón 'Seleccionar', escogemos el fichero que se quiere sellar.</p>
+											<div class="form-group">											
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="btn btn-primary btn-file" id="btnGroupAddon2">
+															Seleccionar <input type="file" id="f1-file">															
+														</span>
+													</div>
+													<input type="text" class="form-control" placeholder="Selecciona fichero..." aria-label="Selecciona fichero..." aria-describedby="btnGroupAddon2" readonly>
+												</div>												
+											</div>	
+											
+											<div class="f1-buttons">
+												<button type="button" class="btn btn-next">Generar Hash</button>
+											</div>
+										</fieldset>
+
+										<fieldset>
+											<h5>Sellado</h5>
+											<p>Se genera un Hash único a partir del contenido del fichero para ser almacenado en Blockchain.</p>
+											<div class="form-group">
+												<label for="exampleInputEmail1"><i>Hash del fichero</i></label>
+												<input type="text" class="form-control" id="hash-f1" aria-describedby="hashHelp" readonly>
+												<small id="hashHelp" class="form-text text-muted">Generado mediante SHA3.</small>
+											</div>
+
+											
+											<div class="f1-buttons">
+												<button type="button" class="btn btn-previous">Volver</button>
+												<button type="submit" class="btn btn-submit">Sellar</button>
+											</div>
+										</fieldset>
+
+										<fieldset>
+											<h5>Resultado</h5>
+																						
+											<div id="stamp-result"></div>
+											
+											<div class="f1-buttons">
+												<button type="button" class="btn btn-start">Inicio</button>
+											</div>
+										</fieldset>
+									
+									</form>									
+								</div>									
+							</div>
+						</div>
+						<div class="tab-pane fade" id="verify" role="tabpanel" aria-labelledby="verify-tab">
+					  								
+							<div class="row">
+								<div class="col">
+									<form role="form" action="" method="post" class="f2">
+										<div id="overlay-f2" class="overlay-form" style="display: none"><img src="Preloader_7.gif" alt="Cargando..." /><br/>Por favor espere.</div>
+										
+										<div class="f2-steps">
+											<div class="f2-progress">
+												<div class="f2-progress-line" data-now-value="16.66" data-number-of-steps="3" style="width: 16.66%;"></div>
+											</div>
+											<div class="f2-step active">
+												<div class="f2-step-icon"><i class="fas fa-home"></i></div>
+												<p>Inicio</p>
+											</div>
+											<div class="f2-step">
+												<div class="f2-step-icon"><i class="far fa-check-square"></i></div>
+												<p>Buscar</p>
+											</div>
+											<div class="f2-step">
+												<div class="f2-step-icon"><i class="fas fa-flag-checkered"></i></div>
+												<p>Resultado</p>
+											</div>
+										</div>
+										
+										<fieldset style="display: block;">
+											<h5>Inicio</h5>
+											<p>Una vez has sellado un fichero, desde aquí puedes verificar la originalidad del fichero en cualquier momento.</p>
+																						
+											<div class="f2-buttons">
+												<button type="button" class="btn btn-next">Iniciar</button>
+											</div>
+										</fieldset>
+										
+										<fieldset>
+											<h5>Seleccionar</h5>
+											<p>Mediante el botón 'Seleccionar', escogemos el fichero que queremos verificar.</p>
+											<div class="form-group">											
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="btn btn-primary btn-file" id="btnGroupAddon2">
+															Seleccionar <input type="file" id="f2-file">															
+														</span>
+													</div>
+													<input type="text" class="form-control" placeholder="Selecciona fichero..." aria-label="Selecciona fichero..." aria-describedby="btnGroupAddon2" readonly>
+													<input type="hidden" id="hash-f2">
+												</div>												
+											</div>	
+											
+											<div class="f2-buttons">
+												<button type="submit" class="btn btn-submit">Verificar</button>
+											</div>
+										</fieldset>
+										
+										<fieldset>
+											<h5>Resultado</h5>
+																						
+											<div id="verify-result"></div>
+											
+											<div class="f2-buttons">
+												<button type="button" class="btn btn-start">Inicio</button>
+											</div>
+										</fieldset>
+									
+									</form>									
+								</div>									
+							</div>
+							
+					  </div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="card mb-3">
+						<div class="card-header" style="background-color: #e9ecef;">
+						  <i class="fab fa-ethereum" style="font-size: 24px;"></i><span style="padding-left: 10px;"><strong>Información Red Ethereum</strong></span>
+						</div>
+						<div class="list-group list-group-flush small">
+						  <span class="list-group-item list-group-item-action bg-dark">
+							<ul id="node-list" class="list-group list-group-flush"></ul>
+						  </span>
+						  
+						  <span class="list-group-item list-group-item-action">
+							<div><h4 id="node-info"></h4></div>
+							<div><strong>Versión:</strong> <span id="version-info"></span></div>
+							<div><strong>Estado:</strong> <span id="status-info"></span></div>
+							<div id="refreshStamp-info"></div>
+						  </span>
+						  
+						  <span class="list-group-item list-group-item-action">
+							<div class="media">
+							  <i class="d-flex mr-3 fas fa-cube" style="font-size:32px"></i>
+							  <div class="media-body">
+								<div><strong>Blocknumber</strong></div>
+								<strong id="block-info" style="font-size: 32px">-</strong>								
+								<div id="blockStamp-info" class="text-muted smaller">-</div>
+							  </div>
+							</div>
+						  </span>
+						  
+						  <span id="block-list" class="list-group-item">
+							<div class="pre-scrollable" style="height: 160px;"></div>
+						  </span>
+						  
+						  <span id="block-details" class="list-group-item"></span>
+
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+				
+		<script src="./node_modules/moment/min/moment-with-locales.min.js"></script>
+		<script src="./node_modules/web3/dist/web3.js"></script>
+		<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>		
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdn.rawgit.com/zenorocha/clipboard.js/v2.0.0/dist/clipboard.min.js"></script>
+		
+		<script src="assets/js/scripts.js"></script>								
+		<script src="./EtherQuerecon.js"></script>
 	</body>
-<script>	
-$(document).ready(function() {
-	networkStatus();
-	monitorizePendings();
-	/*
-	setInterval(function() {
-	  networkStatus();
-	}, 1000);
-	*/
-});	
-</script>
 </html>
