@@ -29,8 +29,9 @@
 					<p>
 						<strong>Blocknumber:</strong>
 						<strong id="block-info">Conectando...</strong>
-						<span id="version-info"></span>
-						<button onclick="initTestPage()" class="btn btn-primary">Refrescar</button>
+						Version:<span id="version-info"></span><br>
+						Peers:<span id="peer-info"></span><br>
+						<button onclick="initTestPage()" class="btn btn-primary">Refresh</button>
 					</p>
 				</div>
 				<div>
@@ -42,9 +43,18 @@
 				<h3>Get Code at Address</h3>
 					<label for="contract-address">Address:</label>
 					<input class="form-control" id="contract-address" value="0x81D3D0f29d771c1495fF79599B981B3EacA1F89a">
-					<button onclick="getCode()" class="btn btn-primary">Consultar</button>
+					<button onclick="getCode()" class="btn btn-primary">Get</button>
 				<p>
 					Result:<textarea class="form-control" rows="5" id="code-info"></textarea>
+				</p>
+			</div>
+			 <div class="well">
+				<h3>Get Block Info</h3>
+				<label for="block-number">Block Number:</label>
+				<input class="form-control" id="block-number" value="4918426">
+				<button onclick="getBlock()" class="btn btn-primary">Get</button>
+				<p>
+					Result:<textarea class="form-control" rows="5" id="block-number-info"></textarea>
 				</p>
 			</div>
 		</div>
@@ -72,13 +82,10 @@
 		web3.version.getNode(function(error, result){
 			$("#version-info").html(result);			
 		});
-
-		web3.eth.getCode("0x81D3D0f29d771c1495fF79599B981B3EacA1F89a", function(error, result){
-                        $("#code-info").html(result);
-                });
-
-		var defaultAccount = web3.eth.defaultAccount;
-		console.log(defaultAccount);
+		
+		web3.net.getPeerCount(function(error, result){
+			$("#peer-info").html(result);			
+		});
 		
 		console.log('End'); 
 	}
@@ -86,19 +93,41 @@
 	function getCode() {
 	
 		var inputValue = $("#contract-address").val();
+		
+		var isAddress = web3.isAddress(inputValue);
 
-			$("#code-info").html("Consultando...");
-			web3.eth.getCode(inputValue, function(error, result){
-				if (error) {
-					console.log('getcode error',error);
-					$("#code-info").html(error);
-				} else {
-					console.log('getcode result',result);
-					$("#code-info").html(result);
-				}
-			});
+		if (isAddress) {
+				$("#code-info").html("Consultando...");
+				web3.eth.getCode(inputValue, function(error, result){
+
+						if (error) {
+								console.log('getcode error',error);
+								$("#code-info").html(error);
+						} else {
+								console.log('getcode result',result);
+								$("#code-info").html(result);
+						}
+				});
+		} else {
+				alert('El valor introducido, no es una direccion valida');
+		}
 	}
 	
+	function getBlock() {
+		var inputValue = $("#block-number").val();
+
+		$("#block-number-info").html("Consultando...");
+		web3.eth.getBlock(inputValue, function(error, result){
+			if (error) {
+				console.log('getcode error',error);
+				$("#block-number-info").html(error);
+			} else {
+				console.log('getcode result',result);
+				$("#block-number-info").html(JSON.stringify(result));
+			}
+		});
+	}
+
 	$(document).ready(function() {
 		initTestPage();		
 	});	
