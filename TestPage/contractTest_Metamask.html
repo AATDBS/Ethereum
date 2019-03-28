@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AYESA Alastria - Contract Test Page</title>
+		<!-- <meta charset="utf-8"> -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+		<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+		<script src="web3/web3.js"></script>
+	<style>
+	.footer {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		background-color: black;
+		color: gray;
+		text-align: center;
+	}
+	</style>
+
+	</head>
+	<body>
+		<div class="container">
+			<h1>AYESA Alastria Node - Contract Test Page</h1>
+			<p>
+			Esta página realiza un ejemplo de invocación de un contrato previamente desplegado en la red de Alastria.<br>
+			Para ello utiliza el provier web3 injectado por el plugin de <a href="https://metamask.io">MetaMask</a>.
+			</p>
+			<p>
+			Requisitos previos:
+			<ul>
+				<li>
+					<strong>MetaMask</strong><br>
+					Debe tener instalado el plugin de <a href="https://metamask.io">MetaMask</a> y conectado al nodo de red de Alastria.<br>
+					RPC personalizado a http://99.80.181.35/rpc.<br>
+					Dado que en Alastria el Gas Price es 0, no necesita fondos en su monedero de MetaMask.<br>
+					Consulte <a href="https://medium.com/crowdbotics/building-ethereum-dapps-with-meta-mask-9bd0685dfd57">https://medium.com/crowdbotics/building-ethereum-dapps-with-meta-mask-9bd0685dfd57</a>
+				</li>
+				<li>
+					<strong>Contract</strong><br>
+					Debe haber desplegado previamente el contrato de pruebas en la red de Alastria y conocer su dirección.<br>
+					Para desplegarlo, puede utilizar <a href="http://remix.ethereum.org">Remix</a> junto con <a href="https://metamask.io">MetaMask</a> o bien Truffle.<br>
+					El código en Solidity del contrato esta diponible en este <a href="https://github.com/AATDBS/Ethereum/blob/solidity0.5/EntityContract.sol">repositorio</a> público de GitHub.<br>
+					No modifique el código del contrato, ya que esta página utiliza el <a href="https://solidity.readthedocs.io/en/develop/abi-spec.html">ABI</a> correspondiente al fuente original.<br>
+					Consulte <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria/_layouts/15/WopiFrame.aspx?sourcedoc={6861440f-ca00-4c20-8e1a-b7e90033096c}&action=edit&wd=target%28Secci%C3%B3n%20sin%20t%C3%ADtulo.one%7Cd2196c04-1491-4d1e-82da-a888df3da092%2F1.3.1%20Conexi%C3%B3n%20al%20Nodo%7C9d678ea2-c6f8-4be3-af36-95686038d093%2F%29">Doc</a>
+				</li>
+			</ul>
+			</p>
+			</p>
+			<div class="well">
+				<h3>Latest Block from Node</h3>
+				<div>
+					<p>
+						<strong>Blocknumber:</strong>
+						<strong id="block-info">Conectando...</strong>
+						Version:<span id="version-info"></span><br>
+						Peers:<span id="peer-info"></span><br>
+						Network:<span id="network-info"></span>(1-Ethereum mainnet, 3-Ethereum ropsten, 4-Ethereum Rinkeby, 83584648538-Alastria Telsius)<br>
+						<button onclick="initTestPage()" class="btn btn-primary">Refresh</button>
+					</p>
+				</div>
+				<div>
+					<p>NetStat: <a href="http://netstats.telsius.alastria.io/">http://netstats.telsius.alastria.io/</a></p>
+					<p>Block Explorer: <a href="http://blkexplorer0.telsius.alastria.io">http://blkexplorer0.telsius.alastria.io</a></p>
+				</div>
+			</div>
+			<div class="well">
+				<h3>Create File</h3>
+					<label for="createFile-contract-address">Contract Address:</label><br>Dirección del Contrato
+					<input class="form-control" id="createFile-contract-address" value="0x81D3D0f29d771c1495fF79599B981B3EacA1F89a">
+					<label for="createFile-wallet-address">Wallet Address:</label><br>
+					Dirección del monedero<br>
+					<label id="createFile-wallet-address"></label><br>
+					<label for="createFile-name">File Name:</label>
+					<input class="form-control" id="createFile-name">
+					<label for="createFile-hash">File Hash:</label><br>Utilidad para generar el hash<a href="http://onlinemd5.com/" target="new">http://onlinemd5.com/</a>
+					<input class="form-control" id="createFile-hash">
+					<button onclick="createFile()" class="btn btn-primary">Invoke</button>
+				<p>
+					Result:<textarea class="form-control" rows="5" id="createFile-result"></textarea>
+				</p>
+			</div>
+			 <div class="well">
+				<h3>Get Block Info</h3>
+				<label for="block-number">Block Number:</label>
+				<input class="form-control" id="block-number" value="4918426">
+				<button onclick="getBlock()" class="btn btn-primary">Get</button>
+				<p>
+					Result:<textarea class="form-control" rows="5" id="block-number-info"></textarea>
+				</p>
+			</div>
+		</div>
+
+		<div class="footer">
+			<p>&copy; 2019 Copyright | <a href="https://www.ayesa.com">Ayesa</a> |  <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria"> Ayesa-Alastria Internal Site</a> | <a href="mailto:alastria@ayesa.com">alastria@ayesa.com</a></p>
+ 		</div>
+	</body>
+	<script>
+	//ABI del contrato
+	var etherQuereconAPI = [
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "entityId",
+					"type": "uint256"
+				},
+				{
+					"name": "entityAddress",
+					"type": "string"
+				}
+			],
+			"name": "createEntity",
+			"outputs": [
+				{
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "entityId",
+					"type": "uint256"
+				},
+				{
+					"name": "statusId",
+					"type": "uint256"
+				},
+				{
+					"name": "_status",
+					"type": "string"
+				}
+			],
+			"name": "createEntityStatus",
+			"outputs": [
+				{
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [],
+			"name": "kill",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "entityId",
+					"type": "uint256"
+				}
+			],
+			"name": "getEntity",
+			"outputs": [
+				{
+					"name": "",
+					"type": "string"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"name": "",
+					"type": "address"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "entityAddress",
+					"type": "string"
+				}
+			],
+			"name": "getEntityByRef",
+			"outputs": [
+				{
+					"name": "",
+					"type": "string"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"name": "",
+					"type": "address"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "entityId",
+					"type": "uint256"
+				},
+				{
+					"name": "statusId",
+					"type": "uint256"
+				}
+			],
+			"name": "getEntityStatus",
+			"outputs": [
+				{
+					"name": "",
+					"type": "address"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"name": "",
+					"type": "string"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		}
+	];
+	
+	function initTestPage() {
+		console.log('Start'); 
+
+		$("#block-info").html("Conectando...");
+		$("#version-info").html("");
+		
+		// Show Web3 where it needs to look for a connection to Ethereum. 
+		//web3 = new Web3(new Web3.providers.HttpProvider('http://192.168.56.103/rpc'));
+		//MetaMask
+		if (typeof web3 !== 'undefined') {
+			// Use Mist/MetaMask's provider
+			web3 = new Web3(web3.currentProvider);
+			
+			web3.eth.getBlockNumber((err, result) => { 
+				if(err) console.error('ERROR', err); 	
+				console.log('Result', result); 
+				$("#block-info").html(result);
+			}); 		
+
+			web3.version.getNode(function(error, result){
+				$("#version-info").html(result);			
+			});
+			
+			web3.net.getPeerCount(function(error, result){
+				$("#peer-info").html(result);			
+			});
+			
+			web3.version.getNetwork(function(error, result){
+				$("#network-info").html(result);			
+			});
+
+		    web3.eth.getAccounts(function(error, result){
+				$("#createFile-wallet-address").html(result[0]);			
+			});
+			
+			
+			
+		} else {
+			console.log('No web3? You should consider trying MetaMask!')
+			$("#block-info").html('No web3? You should consider trying MetaMask!');
+		}
+		
+		
+		
+		console.log('End'); 
+	}
+
+	function createFile() {	
+		var contractAddr = $("#createFile-contract-address").val();
+		var fileName = $("#createFile-name").val();
+		var fileHash = $("#createFile-hash").val();
+		
+		$("#createFile-result").html("Wait...");
+		
+		console.log('createFile ...');
+									
+		// Inicializamos contrato
+		var etherQuerecon = web3.eth.contract(etherQuereconAPI).at(contractAddr);
+		
+		// lanzamos transacción
+		etherQuerecon.createEntity(1, fileHash, function(error, result) {	
+				if (error) {
+					console.error('createEntity error: ', error);
+					$("#createFile-result").html('error: ' + JSON.stringify(error));
+				} else {
+					console.log('createEntity transactionHash: ', result);	
+					$("#createFile-result").html('OK: ' + JSON.stringify(result));					
+				}
+		});
+		
+	}
+	
+	function getBlock() {
+		var inputValue = $("#block-number").val();
+
+		$("#block-number-info").html("Consultando...");
+		web3.eth.getBlock(inputValue, function(error, result){
+			if (error) {
+				console.log('getcode error',error);
+				$("#block-number-info").html(error);
+			} else {
+				console.log('getcode result',result);
+				$("#block-number-info").html(JSON.stringify(result));
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		initTestPage();		
+	});	
+	
+	</script>
+</html>
