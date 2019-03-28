@@ -71,7 +71,169 @@
 			<p>&copy; 2019 Copyright | <a href="https://www.ayesa.com">Ayesa</a> |  <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria"> Ayesa-Alastria Internal Site</a> | <a href="mailto:alastria@ayesa.com">alastria@ayesa.com</a></p>
  		</div>
 	</body>
-	<script>	
+	<script>
+	//ABI del contrato
+	var etherQuereconAPI = [
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "entityId",
+					"type": "uint256"
+				},
+				{
+					"name": "entityAddress",
+					"type": "string"
+				}
+			],
+			"name": "createEntity",
+			"outputs": [
+				{
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "entityId",
+					"type": "uint256"
+				},
+				{
+					"name": "statusId",
+					"type": "uint256"
+				},
+				{
+					"name": "_status",
+					"type": "string"
+				}
+			],
+			"name": "createEntityStatus",
+			"outputs": [
+				{
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [],
+			"name": "kill",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "entityId",
+					"type": "uint256"
+				}
+			],
+			"name": "getEntity",
+			"outputs": [
+				{
+					"name": "",
+					"type": "string"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"name": "",
+					"type": "address"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "entityAddress",
+					"type": "string"
+				}
+			],
+			"name": "getEntityByRef",
+			"outputs": [
+				{
+					"name": "",
+					"type": "string"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"name": "",
+					"type": "address"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "entityId",
+					"type": "uint256"
+				},
+				{
+					"name": "statusId",
+					"type": "uint256"
+				}
+			],
+			"name": "getEntityStatus",
+			"outputs": [
+				{
+					"name": "",
+					"type": "address"
+				},
+				{
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"name": "",
+					"type": "string"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		}
+	];
+	
 	function initTestPage() {
 		console.log('Start'); 
 
@@ -116,17 +278,28 @@
 							
 			// cuenta ethereum por defecto (p.e. la primera)
 			web3.eth.defaultAccount = walletAddr;
+			
+			console.log('unlockAccount ...');
 				
 			// desbloquea la cuenta
-			web3.personal.unlockAccount(walletAddr, walletPwd, 15000);
+			try {
+				web3.personal.unlockAccount(walletAddr, walletPwd, 15000);
+			} catch(err) {
+				console.log('Error in web3.personal.unlockAccount:', err);
+			}
+			
+			console.log('getFichero ...');
+			
+			// Inicializamos contrato
+			var etherQuerecon = web3.eth.contract(etherQuereconAPI).at(contractAddr);
 			
 			// lanzamos transacción
-			etherQuerecon.getFichero(fileHash, function(error, result) {	
+			etherQuerecon.createEntity(1, fileHash, function(error, result) {	
 					if (error) {
-						console.error('getFichero error: ', error);
+						console.error('createEntity error: ', error);
 						$("#createFile-result").html('error: ' + JSON.stringify(error));
 					} else {
-						console.log('getFichero transactionHash: ', result);	
+						console.log('createEntity transactionHash: ', result);	
 						$("#createFile-result").html('OK: ' + JSON.stringify(result));					
 					}
 			});
