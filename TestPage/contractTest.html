@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AYESA Alastria Node Test Page</title>
+		<!-- <meta charset="utf-8"> -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+		<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+		<script src="web3/web3.js"></script>
+	<style>
+	.footer {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		background-color: black;
+		color: gray;
+		text-align: center;
+	}
+	</style>
+
+	</head>
+	<body>
+		<div class="container">
+			<h1>AYESA Alastria Node - Contract Test Page</h1>
+			<div class="well">
+				<h3>Latest Block from Node</h3>
+				<div>
+					<p>
+						<strong>Blocknumber:</strong>
+						<strong id="block-info">Conectando...</strong>
+						Version:<span id="version-info"></span><br>
+						Peers:<span id="peer-info"></span><br>
+						<button onclick="initTestPage()" class="btn btn-primary">Refresh</button>
+					</p>
+				</div>
+				<div>
+					<p>NetStat: <a href="http://netstats.telsius.alastria.io/">http://netstats.telsius.alastria.io/</a></p>
+					<p>Block Explorer: <a href="http://blkexplorer0.telsius.alastria.io">http://blkexplorer0.telsius.alastria.io</a></p>
+				</div>
+			</div>
+			<div class="well">
+				<h3>Create File</h3>
+					<label for="createFile-contract-address">Contract Address:</label><br>Dirección del Contrato
+					<input class="form-control" id="createFile-contract-address" value="0x81D3D0f29d771c1495fF79599B981B3EacA1F89a">
+					<label for="createFile-wallet-address">Wallet Address:</label><br>Dirección del monedero
+					<input class="form-control" id="createFile-wallet-address" value="0xab9d7d1f9c95e5d504d3a93010262ca5fd45f45b">
+					<label for="createFile-wallet-password">Wallet Password:</label><br>Clave del monedero en el nodo
+					<input type="password" class="form-control" id="createFile-wallet-password">
+					<label for="createFile-name">File Name:</label>
+					<input class="form-control" id="createFile-name">
+					<label for="createFile-hash">File Hash:</label><br>Utilidad para generar el hash<a href="http://onlinemd5.com/" target="new">http://onlinemd5.com/</a>
+					<input class="form-control" id="createFile-hash">
+					<button onclick="createFile()" class="btn btn-primary">Invoke</button>
+				<p>
+					Result:<textarea class="form-control" rows="5" id="createFile-result"></textarea>
+				</p>
+			</div>
+			 <div class="well">
+				<h3>Get Block Info</h3>
+				<label for="block-number">Block Number:</label>
+				<input class="form-control" id="block-number" value="4918426">
+				<button onclick="getBlock()" class="btn btn-primary">Get</button>
+				<p>
+					Result:<textarea class="form-control" rows="5" id="block-number-info"></textarea>
+				</p>
+			</div>
+		</div>
+
+		<div class="footer">
+			<p>&copy; 2019 Copyright | <a href="https://www.ayesa.com">Ayesa</a> |  <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria"> Ayesa-Alastria Internal Site</a> | <a href="mailto:alastria@ayesa.com">alastria@ayesa.com</a></p>
+ 		</div>
+	</body>
+	<script>	
+	function initTestPage() {
+		console.log('Start'); 
+
+		$("#block-info").html("Conectando...");
+		$("#version-info").html("");
+		
+		// Show Web3 where it needs to look for a connection to Ethereum. 
+		web3 = new Web3(new Web3.providers.HttpProvider('http://192.168.56.103/rpc'));
+		
+		web3.eth.getBlockNumber((err, result) => { 
+			if(err) console.error('ERROR', err); 	
+			console.log('Result', result); 
+			$("#block-info").html(result);
+		}); 		
+
+		web3.version.getNode(function(error, result){
+			$("#version-info").html(result);			
+		});
+		
+		web3.net.getPeerCount(function(error, result){
+			$("#peer-info").html(result);			
+		});
+		
+		console.log('End'); 
+	}
+
+	function createFile() {	
+		var contractAddr = $("#createFile-contract-address").val();
+		var walletAddr = $("#createFile-wallet-address").val();
+		var walletPwd = $("#createFile-wallet-password").val();
+		var fileName = $("#createFile-name").val();
+		var fileHash = $("#createFile-hash").val();
+		
+		if (!web3.isAddress(contractAddr)) {
+			alert('El valor introducido, ' + contractAddr + ' no es una direccion valida');
+		} else if (!web3.isAddress(walletAddr)) {
+			alert('El valor introducido, ' + walletAddr + ' no es una direccion valida');
+		} else {
+			$("#createFile-result").html("Consultando...");
+			
+			console.log('createFile ...');
+							
+			// cuenta ethereum por defecto (p.e. la primera)
+			web3.eth.defaultAccount = walletAddr;
+				
+			// desbloquea la cuenta
+			web3.personal.unlockAccount(walletAddr, walletPwd, 15000);
+			
+			// lanzamos transacción
+			etherQuerecon.getFichero(fileHash, function(error, result) {	
+					if (error) {
+						console.error('getFichero error: ', error);
+						$("#createFile-result").html('error: ' + JSON.stringify(error));
+					} else {
+						console.log('getFichero transactionHash: ', result);	
+						$("#createFile-result").html('OK: ' + JSON.stringify(result));					
+					}
+			});
+		
+		}
+	}
+	
+	function getBlock() {
+		var inputValue = $("#block-number").val();
+
+		$("#block-number-info").html("Consultando...");
+		web3.eth.getBlock(inputValue, function(error, result){
+			if (error) {
+				console.log('getcode error',error);
+				$("#block-number-info").html(error);
+			} else {
+				console.log('getcode result',result);
+				$("#block-number-info").html(JSON.stringify(result));
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		initTestPage();		
+	});	
+	
+	</script>
+</html>
