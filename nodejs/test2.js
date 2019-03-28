@@ -24,6 +24,13 @@ web3.eth.getBalance("0x407d73d8a49eeb85d32cf465507dd71d507100c1", (err, result) 
     console.log('Balance:', result);
 });
 
+try {
+	web3.personal.unlockAccount(walletAddr, walletPwd, 15000);
+	console.log('wallet unlocked');
+} catch(err) {
+	console.log('Error in web3.personal.unlockAccount:', err);
+}
+
 console.log('End');
 
 
