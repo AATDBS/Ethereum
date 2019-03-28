@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>AYESA Alastria Node Test Page</title>
+		<title>AYESA Alastria - Contract Test Page</title>
 		<!-- <meta charset="utf-8"> -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
@@ -23,6 +23,27 @@
 	<body>
 		<div class="container">
 			<h1>AYESA Alastria Node - Contract Test Page</h1>
+			<p>
+			Esta página realiza un ejemplo de invocación de un contrato previamente desplegado en la red de Alastria.<br>
+			Para ello utiliza el provider web3 apuntando directamente a la url del Nodo http://99.80.181.35/rpc.
+			</p>
+			<p>
+				Requisitos previos:
+				<ul>					
+					<li>
+						<strong>Contract</strong><br>
+						Debe haber desplegado previamente el contrato de pruebas en la red de Alastria y conocer su dirección.<br>
+						Para desplegarlo, puede utilizar <a href="http://remix.ethereum.org">Remix</a> junto con <a href="https://metamask.io">MetaMask</a> o bien Truffle.<br>
+						El código en Solidity del contrato esta diponible en este <a href="https://github.com/AATDBS/Ethereum/blob/solidity0.5/EntityContract.sol">repositorio</a> público de GitHub.<br>
+						No modifique el código del contrato, ya que esta página utiliza el <a href="https://solidity.readthedocs.io/en/develop/abi-spec.html">ABI</a> correspondiente al fuente original.<br>
+						Consulte <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria/_layouts/15/WopiFrame.aspx?sourcedoc={6861440f-ca00-4c20-8e1a-b7e90033096c}&action=edit&wd=target%28Secci%C3%B3n%20sin%20t%C3%ADtulo.one%7Cd2196c04-1491-4d1e-82da-a888df3da092%2F1.3.1%20Conexi%C3%B3n%20al%20Nodo%7C9d678ea2-c6f8-4be3-af36-95686038d093%2F%29">Doc</a>
+					</li>
+				</ul>
+			</p>
+			<p>
+				Este ejemplo utiliza una dirección de monedero que debe estar desbloqueda en el nodo.<br>
+				Dado que Alastria no proporciona la familia personal por RPC, no es posible hacer un <i>web3.personal.unlockAccount</i>
+			</p>
 			<div class="well">
 				<h3>Latest Block from Node</h3>
 				<div>
@@ -297,7 +318,7 @@
 			etherQuerecon.createEntity(1, fileHash, function(error, result) {	
 					if (error) {
 						console.error('createEntity error: ', error);
-						$("#createFile-result").html('error: ' + JSON.stringify(error));
+						$("#createFile-result").html('error: ' + error);
 					} else {
 						console.log('createEntity transactionHash: ', result);	
 						$("#createFile-result").html('OK: ' + JSON.stringify(result));					
