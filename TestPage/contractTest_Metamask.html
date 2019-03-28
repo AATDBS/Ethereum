@@ -25,28 +25,27 @@
 			<h1>AYESA Alastria Node - Contract Test Page</h1>
 			<p>
 			Esta página realiza un ejemplo de invocación de un contrato previamente desplegado en la red de Alastria.<br>
-			Para ello utiliza el provier web3 injectado por el plugin de <a href="https://metamask.io">MetaMask</a>.
+			Para ello utiliza el provider web3 injectado por el plugin de <a href="https://metamask.io">MetaMask</a>.
 			</p>
 			<p>
-			Requisitos previos:
-			<ul>
-				<li>
-					<strong>MetaMask</strong><br>
-					Debe tener instalado el plugin de <a href="https://metamask.io">MetaMask</a> y conectado al nodo de red de Alastria.<br>
-					RPC personalizado a http://99.80.181.35/rpc.<br>
-					Dado que en Alastria el Gas Price es 0, no necesita fondos en su monedero de MetaMask.<br>
-					Consulte <a href="https://medium.com/crowdbotics/building-ethereum-dapps-with-meta-mask-9bd0685dfd57">https://medium.com/crowdbotics/building-ethereum-dapps-with-meta-mask-9bd0685dfd57</a>
-				</li>
-				<li>
-					<strong>Contract</strong><br>
-					Debe haber desplegado previamente el contrato de pruebas en la red de Alastria y conocer su dirección.<br>
-					Para desplegarlo, puede utilizar <a href="http://remix.ethereum.org">Remix</a> junto con <a href="https://metamask.io">MetaMask</a> o bien Truffle.<br>
-					El código en Solidity del contrato esta diponible en este <a href="https://github.com/AATDBS/Ethereum/blob/solidity0.5/EntityContract.sol">repositorio</a> público de GitHub.<br>
-					No modifique el código del contrato, ya que esta página utiliza el <a href="https://solidity.readthedocs.io/en/develop/abi-spec.html">ABI</a> correspondiente al fuente original.<br>
-					Consulte <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria/_layouts/15/WopiFrame.aspx?sourcedoc={6861440f-ca00-4c20-8e1a-b7e90033096c}&action=edit&wd=target%28Secci%C3%B3n%20sin%20t%C3%ADtulo.one%7Cd2196c04-1491-4d1e-82da-a888df3da092%2F1.3.1%20Conexi%C3%B3n%20al%20Nodo%7C9d678ea2-c6f8-4be3-af36-95686038d093%2F%29">Doc</a>
-				</li>
-			</ul>
-			</p>
+				Requisitos previos:
+				<ul>
+					<li>
+						<strong>MetaMask</strong><br>
+						Debe tener instalado el plugin de <a href="https://metamask.io">MetaMask</a> y conectado al nodo de red de Alastria.<br>
+						RPC personalizado a http://99.80.181.35/rpc.<br>
+						Dado que en Alastria el Gas Price es 0, no necesita fondos en su monedero de MetaMask.<br>
+						Consulte <a href="https://medium.com/crowdbotics/building-ethereum-dapps-with-meta-mask-9bd0685dfd57">https://medium.com/crowdbotics/building-ethereum-dapps-with-meta-mask-9bd0685dfd57</a>
+					</li>
+					<li>
+						<strong>Contract</strong><br>
+						Debe haber desplegado previamente el contrato de pruebas en la red de Alastria y conocer su dirección.<br>
+						Para desplegarlo, puede utilizar <a href="http://remix.ethereum.org">Remix</a> junto con <a href="https://metamask.io">MetaMask</a> o bien Truffle.<br>
+						El código en Solidity del contrato esta diponible en este <a href="https://github.com/AATDBS/Ethereum/blob/solidity0.5/EntityContract.sol">repositorio</a> público de GitHub.<br>
+						No modifique el código del contrato, ya que esta página utiliza el <a href="https://solidity.readthedocs.io/en/develop/abi-spec.html">ABI</a> correspondiente al fuente original.<br>
+						Consulte <a href="https://grupoayesaa41015322.sharepoint.com/sites/Alastria/_layouts/15/WopiFrame.aspx?sourcedoc={6861440f-ca00-4c20-8e1a-b7e90033096c}&action=edit&wd=target%28Secci%C3%B3n%20sin%20t%C3%ADtulo.one%7Cd2196c04-1491-4d1e-82da-a888df3da092%2F1.3.1%20Conexi%C3%B3n%20al%20Nodo%7C9d678ea2-c6f8-4be3-af36-95686038d093%2F%29">Doc</a>
+					</li>
+				</ul>
 			</p>
 			<div class="well">
 				<h3>Latest Block from Node</h3>
@@ -56,7 +55,7 @@
 						<strong id="block-info">Conectando...</strong>
 						Version:<span id="version-info"></span><br>
 						Peers:<span id="peer-info"></span><br>
-						Network:<span id="network-info"></span>(1-Ethereum mainnet, 3-Ethereum ropsten, 4-Ethereum Rinkeby, 83584648538-Alastria Telsius)<br>
+						Network:<span id="network-info"></span><br>(1-Ethereum mainnet, 3-Ethereum ropsten, 4-Ethereum Rinkeby, 83584648538-Alastria Telsius)<br>
 						<button onclick="initTestPage()" class="btn btn-primary">Refresh</button>
 					</p>
 				</div>
