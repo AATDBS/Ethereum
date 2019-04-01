@@ -100,13 +100,17 @@ web3.eth.getBalance(walletAddress, function (err, result) {
 	}
 });
 
+var ficheroHash = "Test123";
+var ficheroValue = "Test123 Value";
+
+
 const contract = new web3.eth.Contract(
   contractJson,
   contractAddress
 );
 
 // change this to whatever contract method you are trying to call, E.G. SimpleStore("Hello World")
-const query = contract.methods.createEntity('Test123','Test123 Value');
+const query = contract.methods.createEntity(ficheroHash, ficheroValue);
 const encodedABI = query.encodeABI();
 console.log('encodedABI:' , encodedABI);
 const tx = {
@@ -132,6 +136,15 @@ web3.eth.accounts.signTransaction(tx, privateKey).then(signed => {
       console.log(hash);
     })
     .on('error', console.error);
+});
+*/
+
+// test de ejecucion de metodo de contrato
+const myContract = new web3.eth.Contract(contractJson, contractAddress);
+
+myContract.methods.getEntity(ficheroHash).call()
+.then((result) => {
+    console.log(result);
 });
 
 console.log('End');
