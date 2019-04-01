@@ -79,9 +79,9 @@ const privateKey = '0xFADD2E2DD854353598EC2060A244D219120896815E4B9D7B185C3FC9D3
 
 
 // Show Web3 where it needs to look for a connection to Ethereum.
+//web3 = new Web3(new Web3.providers.HttpProvider('http://99.80.181.35/rpc'));
 //INFURA
 web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/328aa62401014388a80ff5b030ae69ca'));
-//OJO no usar el formato https://rinkeby.infura.io/v3
 
 console.log('INFURA Test');
 
@@ -103,13 +103,17 @@ web3.eth.getBalance(walletAddress, function (err, result) {
 });
 
 
-const contract = new web3.eth.Contract(
+var contract = new web3.eth.Contract(
   contractJson,
   contractAddress
 );
 
+var ficheroHash = "Test123";
+var ficheroValue = "Test123 Value";
+
+
 // change this to whatever contract method you are trying to call, E.G. SimpleStore("Hello World")
-const query = contract.methods.createEntity('Test','Test Value');
+const query = contract.methods.createEntity(ficheroHash, ficheroValue);
 const encodedABI = query.encodeABI();
 console.log('encodedABI:' , encodedABI);
 const tx = {
@@ -136,6 +140,19 @@ web3.eth.accounts.signTransaction(tx, privateKey).then(signed => {
     .on('error', console.error);
 });
 
+const myContract = new web3.eth.Contract(contractJson, contractAddress);
+
+myContract.methods.getEntity(ficheroHash).call()
+.then((result) => {
+    console.log(result);
+});
+/*
+
+myContract.methods.getEntity(web3.utils.fromAscii(ficheroHash)).call()
+.then((result) => {
+    console.log(result);
+});
+*/
 console.log('End');
 
 
