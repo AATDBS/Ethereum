@@ -79,9 +79,9 @@ const privateKey = '0xFADD2E2DD854353598EC2060A244D219120896815E4B9D7B185C3FC9D3
 
 
 // Show Web3 where it needs to look for a connection to Ethereum.
-//web3 = new Web3(new Web3.providers.HttpProvider('http://99.80.181.35/rpc'));
 //INFURA
 web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/328aa62401014388a80ff5b030ae69ca'));
+//OJO no usar el formato https://rinkeby.infura.io/v3
 
 console.log('INFURA Test');
 
