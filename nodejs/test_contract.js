@@ -114,7 +114,7 @@ const tx = {
   to: contractAddress,
   gas: 2000000,
   data: encodedABI,
-  chainId: 83584648538
+  chainId: 83584648538 //Alastria Telsius chainId
 };
 
 const account = web3.eth.accounts.privateKeyToAccount(privateKey);
