@@ -2,10 +2,10 @@
 // Require the web3 node module.
 var Web3 = require('web3');
 
+//codigo en https://github.com/AATDBS/Ethereum/blob/master/EntityContract.sol
+//direccion del contrato desplegado en Rinkeby
 const contractAddress = '0x511feae1dea1bbfbc9f59ab4475869c3103b1d12';
-const walletAddress = "0xCcA67a554b992cC960B82b34fD3e7fCEC14446a0";
-const privateKey = '0xFADD2E2DD854353598EC2060A244D219120896815E4B9D7B185C3FC9D38B1987';
-const contractJson = '[
+const contractJson = [
 	{
 		"constant": false,
 		"inputs": [
@@ -71,7 +71,12 @@ const contractJson = '[
 		"stateMutability": "view",
 		"type": "function"
 	}
-]';
+];
+
+//Monedero de la red Rinkeby
+const walletAddress = "0xCcA67a554b992cC960B82b34fD3e7fCEC14446a0";
+const privateKey = '0xFADD2E2DD854353598EC2060A244D219120896815E4B9D7B185C3FC9D38B1987';
+
 
 // Show Web3 where it needs to look for a connection to Ethereum.
 //web3 = new Web3(new Web3.providers.HttpProvider('http://99.80.181.35/rpc'));
@@ -80,6 +85,7 @@ web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/328aa
 
 console.log('INFURA Test');
 
+//1.0.0-beta.51
 var version2 = web3.version;
 console.log(version2); 
 
@@ -96,14 +102,16 @@ web3.eth.getBalance(walletAddress, function (err, result) {
 	}
 });
 
+
 const contract = new web3.eth.Contract(
-  JSON.parse(contractJson),
+  contractJson,
   contractAddress
 );
 
 // change this to whatever contract method you are trying to call, E.G. SimpleStore("Hello World")
 const query = contract.methods.createEntity('Test','Test Value');
 const encodedABI = query.encodeABI();
+console.log('encodedABI:' , encodedABI);
 const tx = {
   from: walletAddress,
   to: contractAddress,
@@ -112,8 +120,21 @@ const tx = {
 };
 
 const account = web3.eth.accounts.privateKeyToAccount(privateKey);
-console.log(account);
+//console.log(account);
 web3.eth.getBalance(walletAddress).then(console.log);
+
+web3.eth.accounts.signTransaction(tx, privateKey).then(signed => {
+  const tran = web3.eth
+    .sendSignedTransaction(signed.rawTransaction)
+    .on('confirmation', (confirmationNumber, receipt) => {
+      console.log('=> confirmation: ' + confirmationNumber);
+    })
+    .on('transactionHash', hash => {
+      console.log('=> hash');
+      console.log(hash);
+    })
+    .on('error', console.error);
+});
 
 console.log('End');
 
