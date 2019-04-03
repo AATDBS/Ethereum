@@ -79,7 +79,7 @@ const walletAddress = "0xCcA67a554b992cC960B82b34fD3e7fCEC14446a0";
 const privateKey = '0xFADD2E2DD854353598EC2060A244D219120896815E4B9D7B185C3FC9D38B1987';
 
 // Alastria Node
-web3 = new Web3(new Web3.providers.HttpProvider('http://99.80.181.35/rpc'));
+web3 = new Web3(new Web3.providers.HttpProvider('http://alastria.dbslabs.es/rpc'));
 
 console.log('Contract Test');
 
