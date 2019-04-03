@@ -1,0 +1,15 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "Ejemplos de conexión al nodo de Alastria utilizando Node JS y web3js",
+  "main": "test.js",
+  "dependencies": {
+    "web3": "^1.0.0-beta.51"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
