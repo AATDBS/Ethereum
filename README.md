@@ -1,6 +1,6 @@
 # Ethereum
 
-![Ethereum Logo](https://ethereum.org/images/logos/ETHEREUM-LOGO_LANDSCAPE_Black_small.png)
+![Ethereum Logo](https://raw.githubusercontent.com/ethereum/ethereum-org/master/public/images/logos/ETHEREUM-_LOGO-AND-TYPEFACE_HOR_INV_TRANS-small.png)
 
 [Ethereum](https://ethereum.org/) related code repository
 
