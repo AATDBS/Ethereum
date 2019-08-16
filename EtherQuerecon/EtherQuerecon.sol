@@ -1,4 +1,5 @@
-pragma solidity ^0.4.18;
+pragma solidity >=0.4.22 <0.6.0;
+
 
 contract QuereconFileContract{
     
@@ -8,13 +9,6 @@ address private creator;
 function EntityContract() public 
 {
     creator = msg.sender; 
-}
-
-//Standard kill() function to recover funds 
-function kill() public
-{ 
-    if (msg.sender == creator)
-        selfdestruct(creator);  // kills this contract and sends remaining funds back to creator
 }
 
 //struct for Fichero

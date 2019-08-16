@@ -1,0 +1,61 @@
+[
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "ficheroId",
+				"type": "uint256"
+			},
+			{
+				"name": "ficheroHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "createFichero",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "EntityContract",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "ficheroId",
+				"type": "uint256"
+			}
+		],
+		"name": "getFichero",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
