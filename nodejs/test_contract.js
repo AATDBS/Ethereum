@@ -5,6 +5,7 @@ var Web3 = require('web3');
 // contrato
 // codigo en https://github.com/AATDBS/Ethereum/blob/master/EntityContract.sol
 // direccion del contrato desplegado en Alastria
+//const contractAddress = '0xfc45a82b89f0984e99c58f26273d1ac4059f9ce1';
 const contractAddress = '0xaf2429529b16ca59dd6fb394bf83bb79ababb0a3';
 const contractJson = [
 	{
@@ -139,22 +140,20 @@ web3.eth.accounts.signTransaction(tx, privateKey).then(signed => {
     .sendSignedTransaction(signed.rawTransaction)
     .on('confirmation', (confirmationNumber, receipt) => {
       console.log('=> confirmation: ' + confirmationNumber);
+	  console.log('Receipt:', receipt);
+	  console.log('------- EJECUCION CORRECTA -------------');
     })
     .on('transactionHash', hash => {
-      console.log('=> hash');
-      console.log(hash);
+      console.log('=> hash');	  
+	  console.log(hash);
     })
-    .on('=>error', console.error);
+    .on('error', errorData => {
+	  console.log('=> error');	  
+	  console.log(errorData);
+	})
 });
 
 
-// test de ejecucion de metodo de contrato
-const myContract = new web3.eth.Contract(contractJson, contractAddress);
-
-myContract.methods.getEntity(ficheroHash).call()
-.then((result) => {
-    console.log('getEntity(' + ficheroHash + '):', result);
-});
 
 console.log('End');
 
