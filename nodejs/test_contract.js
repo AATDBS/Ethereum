@@ -74,18 +74,24 @@ const contractJson = [
 	}
 ];
 
+console.log('contractAddress:', contractAddress);
+
 //Monedero a utilizar
 const walletAddress = "0xCcA67a554b992cC960B82b34fD3e7fCEC14446a0";
 const privateKey = '0xFADD2E2DD854353598EC2060A244D219120896815E4B9D7B185C3FC9D38B1987';
 
-// Alastria Node
-web3 = new Web3(new Web3.providers.HttpProvider('http://alastria.dbslabs.es/rpc'));
+console.log('walletAddress:', walletAddress);
 
-console.log('Contract Test');
+// Alastria Node
+web3 = new Web3(new Web3.providers.HttpProvider('http://99.80.181.35/rpc'));
+
+console.log('HttpProvider:', 'http://99.80.181.35/rpc');
+
+console.log('Start Contract Test');
 
 //1.0.0-beta.51
 var version2 = web3.version;
-console.log(version2); 
+console.log('web3.version', version2); 
 
 web3.eth.getBlockNumber((err, result) => {
 	if(err) console.error('ERROR', err);
@@ -100,8 +106,11 @@ web3.eth.getBalance(walletAddress, function (err, result) {
 	}
 });
 
-var ficheroHash = "Test123";
-var ficheroValue = "Test123 Value";
+//Genera una par de Fichero y Hash con la fecha-hora de hoy
+var ficheroHash = "Test123 " + new Date().toISOString();
+var ficheroValue = "Test123 Value " + new Date().toISOString();
+
+console.log('ficheroHash:', ficheroHash);
 
 
 const contract = new web3.eth.Contract(
@@ -118,7 +127,7 @@ const tx = {
   to: contractAddress,
   gas: 2000000,
   data: encodedABI,
-  chainId: 83584648538 //Alastria Telsius chainId
+  chainId: 83584648538
 };
 
 const account = web3.eth.accounts.privateKeyToAccount(privateKey);
