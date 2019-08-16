@@ -137,7 +137,7 @@ web3.eth.accounts.signTransaction(tx, privateKey).then(signed => {
     })
     .on('error', console.error);
 });
-*/
+
 
 // test de ejecucion de metodo de contrato
 const myContract = new web3.eth.Contract(contractJson, contractAddress);
